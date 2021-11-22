@@ -12,7 +12,7 @@ import model.Note;
 public class TableModelNote extends AbstractTableModel {
 
     private final String[] columns;
-    private final List<Note> rows;
+    private List<Note> rows;
 
     public TableModelNote() {
         this.columns = new String[]{"Nome", "Descrição", "Possui alarme?", "Data e hora do alarme"};
@@ -50,5 +50,10 @@ public class TableModelNote extends AbstractTableModel {
             default:
                 return null;
         }
-    }  
+    }
+    
+    public void setNotes(List<Note> notes) {
+        this.rows = notes;
+        this.fireTableDataChanged();
+    }
 }

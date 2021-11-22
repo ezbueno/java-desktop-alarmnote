@@ -18,14 +18,24 @@ public class Main extends javax.swing.JFrame {
 
     private NoteControl noteCtr;
     private DateUtil dateUtil;
+    private TableModelNote model;
 
     public Main() {
         this.initComponents();
+        
         this.noteCtr = new NoteControl();
         this.dateUtil = new DateUtil();
         this.txDate.setDate(new Date());
+        this.model = (TableModelNote) this.tbNotes.getModel();
+        
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         HibernateUtil.getManager();
+        
+        this.setTableData();
+    }
+    
+    private void setTableData() {
+        this.model.setNotes(this.noteCtr.getNotes());
     }
 
     private Note getNoteScreen() {
@@ -64,7 +74,7 @@ public class Main extends javax.swing.JFrame {
         txHour = new javax.swing.JFormattedTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbNotes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -167,8 +177,8 @@ public class Main extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Notas cadastradas"));
 
-        jTable1.setModel(new TableModelNote());
-        jScrollPane2.setViewportView(jTable1);
+        tbNotes.setModel(new TableModelNote());
+        jScrollPane2.setViewportView(tbNotes);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -230,7 +240,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbNotes;
     private com.toedter.calendar.JDateChooser txDate;
     private javax.swing.JFormattedTextField txHour;
     private javax.swing.JTextField txName;
