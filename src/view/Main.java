@@ -22,18 +22,18 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         this.initComponents();
-        
+
         this.noteCtr = new NoteControl();
         this.dateUtil = new DateUtil();
         this.txDate.setDate(new Date());
         this.model = (TableModelNote) this.tbNotes.getModel();
-        
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         HibernateUtil.getManager();
-        
+
         this.setTableData();
     }
-    
+
     private void setTableData() {
         this.model.setNotes(this.noteCtr.getNotes());
     }

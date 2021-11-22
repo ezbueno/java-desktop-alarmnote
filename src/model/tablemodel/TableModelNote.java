@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import model.Note;
+import util.DateUtil;
 
 /**
  *
@@ -13,10 +14,12 @@ public class TableModelNote extends AbstractTableModel {
 
     private final String[] columns;
     private List<Note> rows;
+    private final DateUtil dateUtil;
 
     public TableModelNote() {
         this.columns = new String[]{"Nome", "Descrição", "Possui alarme?", "Data e hora do alarme"};
         this.rows = new ArrayList<>();
+        this.dateUtil = new DateUtil();
     }
 
     @Override
@@ -44,9 +47,9 @@ public class TableModelNote extends AbstractTableModel {
             case 1:
                 return note.getDescription();
             case 2:
-                return note.getAlarm();
+                return note.getAlarm() == 1 ? "Sim" : "Não";
             case 3:
-                return note.getDateTimeAlarm();
+                return this.dateUtil.getDateTimeFormatted(note.getDateTimeAlarm());
             default:
                 return null;
         }

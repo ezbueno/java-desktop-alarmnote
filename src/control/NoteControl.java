@@ -17,7 +17,7 @@ public class NoteControl {
         EntityManager manager = HibernateUtil.getManager();
 
         try {
-            listNotes = manager.createQuery("FROM Note").getResultList();
+            listNotes = manager.createQuery("FROM Note ORDER BY id DESC").getResultList();
         } catch (Exception e) {
             System.out.println("Erro ao listar notas: " + e.getMessage());
         } finally {
