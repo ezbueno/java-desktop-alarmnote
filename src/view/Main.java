@@ -266,7 +266,21 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btEditActionPerformed
 
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-        // TODO add your handling code here:
+       int rowSelected = this.tbNotes.getSelectedRow();
+       
+       if (rowSelected != -1) {
+           int opcao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse registro?", "Atenção", JOptionPane.YES_NO_OPTION);
+           
+           if (opcao == 0) {
+               Note note = this.model.getNote(rowSelected);
+               this.noteCtr.delete(note);
+               this.model.deleteNote(rowSelected);
+               JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");               
+           }
+           
+       } else {
+           JOptionPane.showMessageDialog(null, "Por favor, selecione um registro!");
+       }
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncludeActionPerformed

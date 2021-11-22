@@ -65,4 +65,13 @@ public class TableModelNote extends AbstractTableModel {
         int lastIndex = this.getRowCount() - 1;
         this.fireTableRowsInserted(lastIndex, lastIndex);
     }
+    
+    public Note getNote(int index) {
+        return this.rows.get(index);
+    }
+    
+    public void deleteNote(int index) {
+        this.rows.remove(index);
+        this.fireTableDataChanged();
+    }
 }

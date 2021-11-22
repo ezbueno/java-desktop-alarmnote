@@ -39,4 +39,19 @@ public class NoteControl {
             manager.close();
         }
     }
+
+    public void delete(Note note) {
+        EntityManager manager = HibernateUtil.getManager();
+
+        try {
+            manager.getTransaction().begin();
+            Object obj = manager.merge(note);
+            manager.remove(obj);
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Erro ao excluir nota: " + e.getMessage());
+        } finally {
+            manager.close();
+        }
+    }
 }
