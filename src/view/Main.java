@@ -212,8 +212,9 @@ public class Main extends javax.swing.JFrame {
 
     private void btIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncludeActionPerformed
         Note note = this.getNoteScreen();
-        this.noteCtr.save(note);
+        this.noteCtr.save(note);        
         JOptionPane.showMessageDialog(null, "Nota incluída com sucesso!");
+        this.model.addNote(note);
         this.clean();
     }//GEN-LAST:event_btIncludeActionPerformed
 
