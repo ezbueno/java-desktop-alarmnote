@@ -1,20 +1,41 @@
 package view;
 
+import control.NoteControl;
 import entity.HibernateUtil;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import model.Note;
 
 /**
  *
  * @author Ezandro Bueno
  */
 public class Main extends javax.swing.JFrame {
+    
+    private NoteControl noteCtr;
 
     public Main() {
-        this.initComponents();        
-        setExtendedState(JFrame.MAXIMIZED_BOTH);        
+        this.initComponents();
+        this.noteCtr = new NoteControl();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         HibernateUtil.getManager();
     }
 
+    private Note getNoteScreen() {
+        Note note = new Note();
+        note.setName(txName.getText());
+        note.setDescription(txaDescription.getText());
+        note.setAlarm(cbActivateAlarm.isSelected() ? 1 : 0);
+        return note;
+    }
+    
+    private void clean() {
+        txName.setText("");
+        cbActivateAlarm.setSelected(false);
+        txaDescription.setText("");
+        
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -22,12 +43,12 @@ public class Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        txaDescription = new javax.swing.JTextArea();
+        cbActivateAlarm = new javax.swing.JCheckBox();
+        btInclude = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -40,21 +61,26 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setText("Nome:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txNameActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Descrição:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txaDescription.setColumns(20);
+        txaDescription.setRows(5);
+        jScrollPane1.setViewportView(txaDescription);
 
-        jCheckBox1.setText("Ativar alarme");
+        cbActivateAlarm.setText("Ativar alarme");
 
-        jButton1.setText("Incluir");
+        btInclude.setText("Incluir");
+        btInclude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btIncludeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -68,9 +94,9 @@ public class Main extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txName, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox1))
+                                .addComponent(cbActivateAlarm))
                             .addComponent(jLabel2))
                         .addGap(0, 285, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -78,7 +104,7 @@ public class Main extends javax.swing.JFrame {
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btInclude)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -86,14 +112,14 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                    .addComponent(txName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbActivateAlarm))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btInclude)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -146,9 +172,16 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txNameActionPerformed
+
+    private void btIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncludeActionPerformed
+        Note note = this.getNoteScreen();
+        this.noteCtr.save(note);
+        JOptionPane.showMessageDialog(null, "Nota incluída com sucesso!");
+        this.clean();
+    }//GEN-LAST:event_btIncludeActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -158,8 +191,8 @@ public class Main extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton btInclude;
+    private javax.swing.JCheckBox cbActivateAlarm;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -168,7 +201,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txName;
+    private javax.swing.JTextArea txaDescription;
     // End of variables declaration//GEN-END:variables
 }
