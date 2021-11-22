@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import model.Note;
+
 /**
  *
  * @author Ezandro Bueno
