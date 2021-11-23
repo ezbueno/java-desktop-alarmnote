@@ -11,4 +11,4 @@
 
 # Tecnologias
 * Java 17
-* PostgreSQL
+* MySQL
