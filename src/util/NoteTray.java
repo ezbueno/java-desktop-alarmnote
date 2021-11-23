@@ -1,5 +1,6 @@
 package util;
 
+import control.ScheduleControl;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -9,8 +10,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -18,7 +17,7 @@ import javax.swing.JFrame;
  * @author Ezandro Bueno
  */
 public class NoteTray {
-
+    
     private TrayIcon trayIcon;
     private PopupMenu popup;
     private MenuItem openItem;
@@ -26,7 +25,8 @@ public class NoteTray {
     private Image image;
     private JFrame jFrame;
     private SystemTray tray;
-
+    private ScheduleControl scheduleControl;
+    
     public NoteTray(JFrame jFrame) {
         this.popup = new PopupMenu();
         this.openItem = new MenuItem("Abrir");
@@ -35,8 +35,9 @@ public class NoteTray {
         this.trayIcon = new TrayIcon(image, "AlarmNote", this.popup);
         this.trayIcon.setImageAutoSize(true);
         this.jFrame = jFrame;
+        this.scheduleControl = new ScheduleControl();
     }
-
+    
     public void createNoteTray() {
         this.tray = SystemTray.getSystemTray();
         this.popup.add(this.openItem);
@@ -46,18 +47,29 @@ public class NoteTray {
         this.exitItem.addActionListener(this.getActionClose());
         
         try {
-            this.tray.add(trayIcon);
+            this.tray.add(this.trayIcon);
+            this.scheduleControl.initAlarms(this.trayIcon);
         } catch (AWTException ex) {
             System.out.println("Erro ao carregar NoteTray!");
         }
     }
-
+    
     public ActionListener getActionMaximize() {
-        return (e -> jFrame.setVisible(true));
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jFrame.setVisible(true);
+            }
+        };
     }
-
+    
     public ActionListener getActionClose() {
-        return (e -> System.exit(0));
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        };
     }
     
     public void minimize() {
