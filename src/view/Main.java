@@ -2,6 +2,7 @@ package view;
 
 import control.NoteControl;
 import entity.HibernateUtil;
+import java.awt.Frame;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 import model.Note;
 import model.tablemodel.TableModelNote;
 import util.DateUtil;
+import util.NoteTray;
 
 /**
  *
@@ -20,7 +22,8 @@ public class Main extends javax.swing.JFrame {
     private DateUtil dateUtil;
     private TableModelNote model;
     private Note newNote;
-
+    private NoteTray noteTray;
+            
     public Main() {
         this.initComponents();
 
@@ -28,8 +31,12 @@ public class Main extends javax.swing.JFrame {
         this.dateUtil = new DateUtil();
         this.txDate.setDate(new Date());
         this.model = (TableModelNote) this.tbNotes.getModel();
+        this.noteTray = new NoteTray(this);
+        
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.noteTray.createNoteTray();
 
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         HibernateUtil.getManager();
 
         this.setTableData();
@@ -82,6 +89,11 @@ public class Main extends javax.swing.JFrame {
         btDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -324,6 +336,10 @@ public class Main extends javax.swing.JFrame {
             this.btEditActionPerformed(null);
         }
     }//GEN-LAST:event_tbNotesMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.noteTray.minimize();
+    }//GEN-LAST:event_formWindowClosed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
