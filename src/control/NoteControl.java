@@ -40,6 +40,20 @@ public class NoteControl {
         }
     }
 
+    public void update(Note note) {
+        EntityManager manager = HibernateUtil.getManager();
+
+        try {
+            manager.getTransaction().begin();
+            manager.merge(note);
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar nota: " + e.getMessage());
+        } finally {
+            manager.close();
+        }
+    }
+
     public void delete(Note note) {
         EntityManager manager = HibernateUtil.getManager();
 

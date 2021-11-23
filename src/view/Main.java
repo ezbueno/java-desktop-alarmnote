@@ -19,6 +19,7 @@ public class Main extends javax.swing.JFrame {
     private NoteControl noteCtr;
     private DateUtil dateUtil;
     private TableModelNote model;
+    private Note newNote;
 
     public Main() {
         this.initComponents();
@@ -181,6 +182,11 @@ public class Main extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         tbNotes.setModel(new TableModelNote());
+        tbNotes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNotesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbNotes);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -262,34 +268,62 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_txNameActionPerformed
 
     private void btEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditActionPerformed
-        // TODO add your handling code here:
+        int rowSelected = this.tbNotes.getSelectedRow();
+
+        if (rowSelected != -1) {
+            this.newNote = this.model.getNote(rowSelected);
+            this.loadData(this.newNote);
+        }
     }//GEN-LAST:event_btEditActionPerformed
 
+    private void loadData(Note newNote) {
+        this.txName.setText(this.newNote.getName());
+        this.cbActivateAlarm.setSelected(this.newNote.getAlarm() == 1);
+        this.txDate.setDate(this.newNote.getDateTimeAlarm());
+        this.txHour.setText(this.dateUtil.getTimeFormatted(this.newNote.getDateTimeAlarm()));
+        this.txaDescription.setText(this.newNote.getDescription());
+    }
+
     private void btDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeleteActionPerformed
-       int rowSelected = this.tbNotes.getSelectedRow();
-       
-       if (rowSelected != -1) {
-           int opcao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse registro?", "Atenção", JOptionPane.YES_NO_OPTION);
-           
-           if (opcao == 0) {
-               Note note = this.model.getNote(rowSelected);
-               this.noteCtr.delete(note);
-               this.model.deleteNote(rowSelected);
-               JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");               
-           }
-           
-       } else {
-           JOptionPane.showMessageDialog(null, "Por favor, selecione um registro!");
-       }
+        int rowSelected = this.tbNotes.getSelectedRow();
+
+        if (rowSelected != -1) {
+            int option = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse registro?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+            if (option == 0) {
+                Note note = this.model.getNote(rowSelected);
+                this.noteCtr.delete(note);
+                this.model.deleteNote(rowSelected);
+                JOptionPane.showMessageDialog(null, "Registro excluído com sucesso!");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um registro!");
+        }
     }//GEN-LAST:event_btDeleteActionPerformed
 
     private void btIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncludeActionPerformed
         Note note = this.getNoteScreen();
-        this.noteCtr.save(note);
-        JOptionPane.showMessageDialog(null, "Nota incluída com sucesso!");
-        this.model.addNote(note);
+        
+        if (this.newNote == null) {
+            this.noteCtr.save(note);
+            JOptionPane.showMessageDialog(null, "Nota incluída com sucesso!");
+            this.model.addNote(note);            
+        } else {
+            note.setId(this.newNote.getId());
+            this.noteCtr.update(note);
+            JOptionPane.showMessageDialog(null, "Nota atualizada com sucesso!");
+            this.model.updateNote(note);
+            this.newNote = null;
+        }        
         this.clean();
     }//GEN-LAST:event_btIncludeActionPerformed
+
+    private void tbNotesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNotesMouseClicked
+        if (evt.getClickCount() == 2) {
+            this.btEditActionPerformed(null);
+        }
+    }//GEN-LAST:event_tbNotesMouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
