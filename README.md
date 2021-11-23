@@ -6,9 +6,7 @@
 * Importação de componentes externos;
 * Criação e manipulação de tabelas com table model customizado;
 * Criação de pop-ups;
-* Criação de executável;
-* Criação de Instalador;
 
 # Tecnologias
 * Java 17
-* MySQL
+* PostgreSQL
